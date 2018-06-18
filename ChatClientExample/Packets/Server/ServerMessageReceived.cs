@@ -11,6 +11,10 @@ namespace ChatClientExample.Packets.Server
         public override void HandlePacket(object data = null)
         {
             ChatClient client = (ChatClient) data;
+
+            //Don't log if message comes from self
+            if (Source == client.ClientSocket) return;
+
             client.WriteToChat(PacketMessage.Author, PacketMessage.Message);
         }
     }
