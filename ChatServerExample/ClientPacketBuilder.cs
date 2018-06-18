@@ -1,4 +1,5 @@
-﻿using Kizuna;
+﻿using ChatProtocol;
+using Kizuna;
 
 namespace ChatServerExample
 {
@@ -8,7 +9,7 @@ namespace ChatServerExample
         {
             RegisterPacketIdentifier(PacketTypes.Chat, ClientPackets.ChatMessage);
 
-            RegisterFactory(PacketTypes.Chat, new ChatPacketFactory());
+            RegisterFactory(PacketTypes.Chat, new ClientChatPacketFactory());
         }
     }
 }

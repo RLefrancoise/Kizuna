@@ -1,4 +1,5 @@
-﻿using ChatServerExample.Packets.PacketData;
+﻿using ChatProtocol;
+using ChatProtocol.PacketData;
 using Kizuna.Json;
 
 namespace ChatServerExample.Packets.Server

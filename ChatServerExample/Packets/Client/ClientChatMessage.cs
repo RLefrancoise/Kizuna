@@ -1,5 +1,5 @@
 ﻿using System;
-using ChatServerExample.Packets.PacketData;
+using ChatProtocol.PacketData;
 using ChatServerExample.Packets.Server;
 using Kizuna;
 using Kizuna.Json;

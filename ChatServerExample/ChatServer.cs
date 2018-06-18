@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,10 @@ namespace ChatServerExample
             AsynchronousSocketListener.OnConnectionOpened += NewClientConnected;
 
             Task.Factory.StartNew(CheckClientTimeout, _cancellationTokenSource.Token);
+            Task.Factory.StartNew(ListenClients, _cancellationTokenSource.Token);
+
             AsynchronousSocketListener.StartListening();
+
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
         }
@@ -44,9 +48,26 @@ namespace ChatServerExample
         {
             lock (_lock)
             {
+                Console.WriteLine($"Client {client.RemoteEndPoint as IPEndPoint} connected");
                 _clients.Add(client);
-                AbstractPacketBuilder.ReadAndHandlePacketFromSocket(client, _packetBuilder, this);
+                //AbstractPacketBuilder.ReadAndHandlePacketFromSocket(client, _packetBuilder, this);
             }
+        }
+
+        private void ListenClients()
+        {
+            while (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                lock (_lock)
+                {
+                    foreach (var client in _clients)
+                    {
+                        if (client.Available == 0) continue;
+                        
+                        AbstractPacketBuilder.ReadAndHandlePacketFromSocket(client, _packetBuilder, this);
+                    }
+                }
+            } 
         }
 
         private async void CheckClientTimeout()
@@ -57,8 +78,9 @@ namespace ChatServerExample
                 {
                     for(var i = 0 ; i < _clients.Count ; i++)
                     {
-                        if (_clients[i].Connected) continue;
+                        if (!_clients[i].Poll(10, SelectMode.SelectRead) || _clients[i].Available != 0) continue;
 
+                        Console.WriteLine($"Client {_clients[i].RemoteEndPoint as IPEndPoint} disconnected");
                         _clients.Remove(_clients[i]);
                         i--;
                     }
@@ -67,8 +89,6 @@ namespace ChatServerExample
                 //Check every 2 seconds
                 await Task.Delay(2000);
             }
-
-            Console.WriteLine("Stopped checking client timeout");
         }
     }
 }

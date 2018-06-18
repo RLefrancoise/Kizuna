@@ -1,4 +1,4 @@
-﻿namespace ChatServerExample.Packets.PacketData
+﻿namespace ChatProtocol.PacketData
 {
     public struct ChatMessage
     {

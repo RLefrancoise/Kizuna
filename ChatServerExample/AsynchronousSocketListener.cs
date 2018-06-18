@@ -30,6 +30,8 @@ namespace ChatServerExample
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
 
+                Console.WriteLine($"Server {ipAddress} listening to port {11000}");
+
                 while (true)
                 {
                     // Set the event to nonsignaled state.  

@@ -1,4 +1,4 @@
-﻿namespace ChatServerExample
+﻿namespace ChatProtocol
 {
     public static class PacketTypes
     {

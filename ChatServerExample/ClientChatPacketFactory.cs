@@ -1,9 +1,10 @@
-﻿using ChatServerExample.Packets.Client;
+﻿using ChatProtocol;
+using ChatServerExample.Packets.Client;
 using Kizuna;
 
 namespace ChatServerExample
 {
-    public class ChatPacketFactory : IPacketFactory
+    public class ClientChatPacketFactory : IPacketFactory
     {
         public IIncomingPacket FromPacketInfo(IncomingPacketInfo info)
         {
