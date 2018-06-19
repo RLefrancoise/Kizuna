@@ -4,6 +4,10 @@ using Kizuna;
 
 namespace ChatClientExample
 {
+    /// <inheritdoc cref="IPacketFactory"/>
+    /// <summary>
+    /// Packet factory for server packets
+    /// </summary>
     public class ServerChatPacketFactory : IPacketFactory
     {
         public IIncomingPacket FromPacketInfo(IncomingPacketInfo info)
@@ -12,9 +16,9 @@ namespace ChatClientExample
             {
                 case ServerPackets.MessageReceived:
                     return new ServerMessageReceived(info);
+                default:
+                    return null;
             }
-
-            return null;
         }
     }
 }

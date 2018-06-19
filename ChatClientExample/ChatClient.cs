@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ChatClientExample.Packets.Client;
@@ -11,10 +9,19 @@ using Kizuna;
 
 namespace ChatClientExample
 {
+    /// <summary>
+    /// Chat client that connects to a chat server and allows users to chat by messages.
+    /// </summary>
     public class ChatClient
     {
+        /// <summary>
+        /// Current user input. Should not be accessed directly as it is not thread-safe
+        /// </summary>
         private string _currentInput;
 
+        /// <summary>
+        /// Current user input with lock management to access it from any thread
+        /// </summary>
         private string CurrentInput
         {
             get
@@ -34,6 +41,9 @@ namespace ChatClientExample
             }
         }
 
+        /// <summary>
+        /// Nick name of the user
+        /// </summary>
         public string NickName { get; private set; }
 
         /// <summary>
@@ -108,7 +118,7 @@ namespace ChatClientExample
             ReadUserInput();
         }
 
-        private void DisplayChatWelcome()
+        private static void DisplayChatWelcome()
         {
             LogInfo("-------------------------------------------");
             LogInfo("Welcome to this Kizuna Chat Client Example!");
@@ -125,7 +135,7 @@ namespace ChatClientExample
         /// </summary>
         /// <param name="input">input to check</param>
         /// <returns>true if input is a command, false otherwise</returns>
-        private bool InputIsCommand(string input)
+        private static bool InputIsCommand(string input)
         {
             return input.StartsWith("/");
         }
@@ -135,7 +145,7 @@ namespace ChatClientExample
         /// </summary>
         /// <param name="command">command to handle</param>
         /// <returns>true to continue to read user input after command execution, false otherwise</returns>
-        private bool HandleChatCommand(string command)
+        private static bool HandleChatCommand(string command)
         {
             if (!command.StartsWith("/")) return true;
 

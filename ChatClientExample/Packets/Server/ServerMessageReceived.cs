@@ -1,22 +1,24 @@
-﻿using System;
-using System.Net;
-using ChatProtocol.PacketData;
+﻿using ChatProtocol.PacketData;
 using Kizuna;
 using Kizuna.Json;
 
 namespace ChatClientExample.Packets.Server
 {
+    /// <inheritdoc cref="IncomingJsonPacket{ChatMessage}"/>
+    /// <summary>
+    /// Packet when a new chat message has been written in the chat
+    /// </summary>
     public class ServerMessageReceived : IncomingJsonPacket<ChatMessage>
     {
+        /// <summary>
+        /// Constructs a new ServerMessageReceived packet
+        /// </summary>
+        /// <param name="info"></param>
         public ServerMessageReceived(IncomingPacketInfo info) : base(info) { }
 
         public override void HandlePacket(object data = null)
         {
             ChatClient client = (ChatClient) data;
-
-            //Don't log if message comes from self
-            //if ((Source.RemoteEndPoint as IPEndPoint).Equals(client.ClientSocket.RemoteEndPoint as IPEndPoint)) return;
-
             client.WriteToChat(PacketMessage.Author, PacketMessage.Message);
         }
     }
