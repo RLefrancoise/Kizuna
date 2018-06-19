@@ -235,12 +235,15 @@ namespace ChatClientExample
         /// <summary>
         /// Clear current line
         /// </summary>
-        private static void ClearCurrentConsoleLine()
+        private void ClearCurrentConsoleLine()
         {
-            int currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLineCursor);
+            lock (_lock)
+            {
+                int currentLineCursor = Console.CursorTop;
+                Console.SetCursorPosition(0, Console.CursorTop);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, currentLineCursor);
+            }
         }
 
         /// <summary>
@@ -250,16 +253,19 @@ namespace ChatClientExample
         /// <param name="message"></param>
         public void WriteToChat(string author, string message)
         {
-            //First clear current line
-            ClearCurrentConsoleLine();
+            lock (_lock)
+            {
+                //First clear current line
+                ClearCurrentConsoleLine();
 
-            //Write to chat
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write($"{author}: ");
-            Console.ResetColor();
-            Console.WriteLine(message);
+                //Write to chat
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($"{author}: ");
+                Console.ResetColor();
+                Console.WriteLine(message);
 
-            RefreshUserInput();
+                RefreshUserInput();
+            }
         }
 
         /// <summary>
@@ -267,14 +273,17 @@ namespace ChatClientExample
         /// </summary>
         private void RefreshUserInput()
         {
-            //First clear current line
-            ClearCurrentConsoleLine();
+            lock (_lock)
+            {
+                //First clear current line
+                ClearCurrentConsoleLine();
 
-            //Redisplay current user input
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write($"{NickName}: ");
-            Console.ResetColor();
-            Console.Write(CurrentInput);
+                //Redisplay current user input
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($"{NickName}: ");
+                Console.ResetColor();
+                Console.Write(CurrentInput);
+            }
         }
 
         /// <summary>
