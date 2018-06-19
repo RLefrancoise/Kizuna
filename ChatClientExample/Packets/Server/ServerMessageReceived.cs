@@ -1,4 +1,6 @@
-﻿using ChatProtocol.PacketData;
+﻿using System;
+using System.Net;
+using ChatProtocol.PacketData;
 using Kizuna;
 using Kizuna.Json;
 
@@ -13,7 +15,7 @@ namespace ChatClientExample.Packets.Server
             ChatClient client = (ChatClient) data;
 
             //Don't log if message comes from self
-            if (Source == client.ClientSocket) return;
+            //if ((Source.RemoteEndPoint as IPEndPoint).Equals(client.ClientSocket.RemoteEndPoint as IPEndPoint)) return;
 
             client.WriteToChat(PacketMessage.Author, PacketMessage.Message);
         }

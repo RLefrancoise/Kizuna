@@ -8,7 +8,7 @@ namespace ChatClientExample
         {
             try
             {
-                ChatClient client = new ChatClient("fe80::ca:6225:22f1:270d%3", 11000);
+                ChatClient client = new ChatClient(args[0], int.Parse(args[1]));
                 client.OnConnectionLost += () =>
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
